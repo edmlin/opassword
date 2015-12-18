@@ -70,9 +70,13 @@ namespace opassword
 				if(col.Name!="Selected" && col.Name!="User" && col.Name!="Password" && col.Name!="New Password")
 					col.ReadOnly=true;
 				else
-					col.AutoSizeMode=DataGridViewAutoSizeColumnMode.AllCells;
+				{
+					//col.AutoSizeMode=DataGridViewAutoSizeColumnMode.AllCells;
+					dataGridView1.AutoResizeColumn(col.Index);
+				}
 			}
-			
+			dataGridView1.Columns["Selected"].SortMode= DataGridViewColumnSortMode.Automatic;
+			dataGridView1.RowHeadersWidth=50;
 		}
 		void CbSelectAllClick(object sender, EventArgs e)
 		{
@@ -83,6 +87,7 @@ namespace opassword
 		}
 		void DataGridView1CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
+			if(e.ColumnIndex<0) return;
 			if(dataGridView1.Columns[e.ColumnIndex].Name=="Selected")
 			{
 				bool allSelected=true;
@@ -206,7 +211,7 @@ namespace opassword
 					using(OracleCommand cmd=conn.CreateCommand())
 					{
 						cmd.BindByName=true;
-						cmd.CommandText="select to_char(expiry_date,'Mon dd, yyyy hh24:mi:ss') from user_users where username=upper(:username)";
+						cmd.CommandText="select to_char(expiry_date,'yyyy-mm-dd hh24:mi:ss') from user_users where username=upper(:username)";
 						cmd.Parameters.Add("username",user);
 						object r=cmd.ExecuteScalar()??"";
 						expiry=r.ToString();
@@ -246,7 +251,7 @@ namespace opassword
 						cmd.BindByName=true;
 						cmd.CommandText=String.Format("alter user {0} identified by \"{1}\" replace \"{2}\"",user,newPassword,password);
 						cmd.ExecuteNonQuery();
-						cmd.CommandText="select to_char(expiry_date,'Mon dd, yyyy hh24:mi:ss') from user_users where username=upper(:username)";
+						cmd.CommandText="select to_char(expiry_date,'yyyy-mm-dd hh24:mi:ss') from user_users where username=upper(:username)";
 						cmd.Parameters.Add("username",user);
 						object r=cmd.ExecuteScalar()??"";
 						expiry=r.ToString();
@@ -382,6 +387,21 @@ namespace opassword
 		void BtNextClick(object sender, EventArgs e)
 		{
 			FindNext(tbFind.Text);
+		}
+		void DataGridView1Sorted(object sender, EventArgs e)
+		{
+			ShowRowIndex();
+		}
+		void ShowRowIndex()
+		{
+			foreach(DataGridViewRow row in dataGridView1.Rows)
+			{
+				row.HeaderCell.Value=(row.Index+1).ToString();
+			}
+		}
+		void DataGridView1DataSourceChanged(object sender, EventArgs e)
+		{
+			ShowRowIndex();
 		}
 	}
 }

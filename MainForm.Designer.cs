@@ -58,6 +58,7 @@ namespace opassword
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btNext = new System.Windows.Forms.Button();
 			this.btPrev = new System.Windows.Forms.Button();
@@ -302,9 +303,11 @@ namespace opassword
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.Size = new System.Drawing.Size(868, 317);
 			this.dataGridView1.TabIndex = 2;
+			this.dataGridView1.DataSourceChanged += new System.EventHandler(this.DataGridView1DataSourceChanged);
 			this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1CellFormatting);
 			this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1CellValueChanged);
 			this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridView1CurrentCellDirtyStateChanged);
+			this.dataGridView1.Sorted += new System.EventHandler(this.DataGridView1Sorted);
 			// 
 			// MainForm
 			// 
@@ -314,6 +317,7 @@ namespace opassword
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.panel1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.Text = "opassword";
 			this.Load += new System.EventHandler(this.MainFormLoad);
