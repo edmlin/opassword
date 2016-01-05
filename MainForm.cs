@@ -129,23 +129,17 @@ namespace opassword
 			dataGridView1.FirstDisplayedScrollingColumnIndex=firstCol;
 			dataGridView1.FirstDisplayedScrollingRowIndex=firstRow;
 			
-			int threads=0;
 			List<Task> tasks=new List<Task>();
 			foreach(DataRow row in dt.Rows)
 			{
 				if((bool)row["Selected"])
 				{
-					if(threads<nThreads.Value)
-					{
-						tasks.Add(CheckAsync(row));
-						threads++;
-					}
-					else
+					while(tasks.Count>=nThreads.Value)
 					{
 						Task task=await Task.WhenAny(tasks);
 						tasks.Remove(task);
-						tasks.Add(CheckAsync(row));
 					}
+					tasks.Add(CheckAsync(row));
 				}
 			}
 			await Task.WhenAll(tasks);
@@ -166,23 +160,17 @@ namespace opassword
 			dataGridView1.FirstDisplayedScrollingColumnIndex=firstCol;
 			dataGridView1.FirstDisplayedScrollingRowIndex=firstRow;
 			
-			int threads=0;
 			List<Task> tasks=new List<Task>();
 			foreach(DataRow row in dt.Rows)
 			{
 				if((bool)row["Selected"])
 				{
-					if(threads<nThreads.Value)
-					{
-						tasks.Add(ChangeAsync(row));
-						threads++;
-					}
-					else
+					while(tasks.Count>=nThreads.Value)
 					{
 						Task task=await Task.WhenAny(tasks);
 						tasks.Remove(task);
-						tasks.Add(ChangeAsync(row));
 					}
+					tasks.Add(ChangeAsync(row));
 				}
 			}
 			await Task.WhenAll(tasks);
@@ -201,7 +189,7 @@ namespace opassword
 		}
 		string Check(string db,string user,string password,out string expiry)
 		{
-			string oradb = String.Format("Data Source={0};User Id={1};Password={2};",db,user,password);
+			string oradb = String.Format("Data Source={0};User Id={1};Password={2};Pooling=false",db,user,password);
 			expiry="";
 			using(OracleConnection conn = new OracleConnection(oradb))
 			{
@@ -239,7 +227,7 @@ namespace opassword
 		}
 		string Change(string db,string user,string password,string newPassword,out string expiry)
 		{
-			string oradb = String.Format("Data Source={0};User Id={1};Password={2};",db,user,password);
+			string oradb = String.Format("Data Source={0};User Id={1};Password={2};Pooling=false",db,user,password);
 			expiry="";
 			using(OracleConnection conn = new OracleConnection(oradb))
 			{

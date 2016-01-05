@@ -254,6 +254,11 @@ namespace opassword
 			// nThreads
 			// 
 			this.nThreads.Location = new System.Drawing.Point(69, 16);
+			this.nThreads.Minimum = new decimal(new int[] {
+			1,
+			0,
+			0,
+			0});
 			this.nThreads.Name = "nThreads";
 			this.nThreads.Size = new System.Drawing.Size(59, 20);
 			this.nThreads.TabIndex = 3;
