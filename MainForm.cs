@@ -191,14 +191,15 @@ namespace opassword
 		{
 			string oradb = String.Format("Data Source={0};User Id={1};Password={2};Pooling=false",db,user,password);
 			expiry="";
-			using(OracleConnection conn = new OracleConnection(oradb))
+			
+			using(System.Data.OracleClient.OracleConnection conn = new System.Data.OracleClient.OracleConnection(oradb))
 			{
 				try
 				{
 					conn.Open();
-					using(OracleCommand cmd=conn.CreateCommand())
+					using(System.Data.OracleClient.OracleCommand cmd=conn.CreateCommand())
 					{
-						cmd.BindByName=true;
+						//cmd.BindByName=true;
 						cmd.CommandText="select to_char(expiry_date,'yyyy-mm-dd hh24:mi:ss') from user_users where username=upper(:username)";
 						cmd.Parameters.Add("username",user);
 						object r=cmd.ExecuteScalar()??"";
@@ -229,14 +230,14 @@ namespace opassword
 		{
 			string oradb = String.Format("Data Source={0};User Id={1};Password={2};Pooling=false",db,user,password);
 			expiry="";
-			using(OracleConnection conn = new OracleConnection(oradb))
+			using(System.Data.OracleClient.OracleConnection conn = new System.Data.OracleClient.OracleConnection(oradb))
 			{
 				try
 				{
 					conn.Open();
-					using(OracleCommand cmd=conn.CreateCommand())
+					using(System.Data.OracleClient.OracleCommand cmd=conn.CreateCommand())
 					{
-						cmd.BindByName=true;
+						//cmd.BindByName=true;
 						cmd.CommandText=String.Format("alter user {0} identified by \"{1}\" replace \"{2}\"",user,newPassword,password);
 						cmd.ExecuteNonQuery();
 						cmd.CommandText="select to_char(expiry_date,'yyyy-mm-dd hh24:mi:ss') from user_users where username=upper(:username)";
