@@ -192,14 +192,16 @@ namespace opassword
 			string oradb = String.Format("Data Source={0};User Id={1};Password={2};Pooling=false",db,user,password);
 			expiry="";
 			
-			using(System.Data.OracleClient.OracleConnection conn = new System.Data.OracleClient.OracleConnection(oradb))
+			//using(System.Data.OracleClient.OracleConnection conn = new System.Data.OracleClient.OracleConnection(oradb))
+			using(OracleConnection conn = new OracleConnection(oradb))
 			{
 				try
 				{
 					conn.Open();
-					using(System.Data.OracleClient.OracleCommand cmd=conn.CreateCommand())
+					//using(System.Data.OracleClient.OracleCommand cmd=conn.CreateCommand())
+					using(OracleCommand cmd=conn.CreateCommand())
 					{
-						//cmd.BindByName=true;
+						cmd.BindByName=true;
 						cmd.CommandText="select to_char(expiry_date,'yyyy-mm-dd hh24:mi:ss') from user_users where username=upper(:username)";
 						cmd.Parameters.Add("username",user);
 						object r=cmd.ExecuteScalar()??"";
@@ -230,16 +232,34 @@ namespace opassword
 		{
 			string oradb = String.Format("Data Source={0};User Id={1};Password={2};Pooling=false",db,user,password);
 			expiry="";
-			using(System.Data.OracleClient.OracleConnection conn = new System.Data.OracleClient.OracleConnection(oradb))
+			//using(System.Data.OracleClient.OracleConnection conn = new System.Data.OracleClient.OracleConnection(oradb))
+			using(OracleConnection conn = new OracleConnection(oradb))
 			{
 				try
 				{
-					conn.Open();
-					using(System.Data.OracleClient.OracleCommand cmd=conn.CreateCommand())
+					try
 					{
-						//cmd.BindByName=true;
-						cmd.CommandText=String.Format("alter user {0} identified by \"{1}\" replace \"{2}\"",user,newPassword,password);
-						cmd.ExecuteNonQuery();
+						conn.Open();
+						using(OracleCommand cmd=conn.CreateCommand())
+						{
+							cmd.CommandText=String.Format("alter user {0} identified by \"{1}\" replace \"{2}\"",user,newPassword,password);
+							cmd.ExecuteNonQuery();
+						}
+					}
+					catch(OracleException ex)
+					{
+						if(ex.Number==28001) //Password expired
+						{
+							conn.OpenWithNewPassword(newPassword);
+						}
+						else
+						{
+							throw;
+						}
+					}
+					using(OracleCommand cmd=conn.CreateCommand())
+					{
+						cmd.BindByName=true;
 						cmd.CommandText="select to_char(expiry_date,'yyyy-mm-dd hh24:mi:ss') from user_users where username=upper(:username)";
 						cmd.Parameters.Add("username",user);
 						object r=cmd.ExecuteScalar()??"";
@@ -391,6 +411,22 @@ namespace opassword
 		void DataGridView1DataSourceChanged(object sender, EventArgs e)
 		{
 			ShowRowIndex();
+		}
+		void CmDeleteOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			e.Cancel = dataGridView1.SelectedRows.Count <= 0;
+		}
+		void DeleteToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			foreach(DataGridViewRow row in dataGridView1.SelectedRows)
+			{
+				(row.DataBoundItem as DataRowView).Row.Delete();
+			}
+			ShowRowIndex();
+		}
+		void BtReloadClick(object sender, EventArgs e)
+		{
+			MainFormLoad(null,null);
 		}
 	}
 }

@@ -36,6 +36,9 @@ namespace opassword
 		private System.Windows.Forms.Button btPrev;
 		private System.Windows.Forms.TextBox tbFind;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.ContextMenuStrip cmDelete;
+		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+		private System.Windows.Forms.Button btReload;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -58,8 +61,10 @@ namespace opassword
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.btReload = new System.Windows.Forms.Button();
 			this.btNext = new System.Windows.Forms.Button();
 			this.btPrev = new System.Windows.Forms.Button();
 			this.tbFind = new System.Windows.Forms.TextBox();
@@ -81,14 +86,18 @@ namespace opassword
 			this.btChange = new System.Windows.Forms.Button();
 			this.btCheck = new System.Windows.Forms.Button();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
+			this.cmDelete = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.nThreads)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			this.cmDelete.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.btReload);
 			this.panel1.Controls.Add(this.btNext);
 			this.panel1.Controls.Add(this.btPrev);
 			this.panel1.Controls.Add(this.tbFind);
@@ -108,6 +117,17 @@ namespace opassword
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(868, 67);
 			this.panel1.TabIndex = 0;
+			// 
+			// btReload
+			// 
+			this.btReload.Location = new System.Drawing.Point(376, 8);
+			this.btReload.Name = "btReload";
+			this.btReload.Size = new System.Drawing.Size(100, 23);
+			this.btReload.TabIndex = 11;
+			this.btReload.TabStop = false;
+			this.btReload.Text = "Reload Servers";
+			this.btReload.UseVisualStyleBackColor = true;
+			this.btReload.Click += new System.EventHandler(this.BtReloadClick);
 			// 
 			// btNext
 			// 
@@ -303,6 +323,7 @@ namespace opassword
 			this.dataGridView1.AllowUserToAddRows = false;
 			this.dataGridView1.AllowUserToDeleteRows = false;
 			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView1.ContextMenuStrip = this.cmDelete;
 			this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dataGridView1.Location = new System.Drawing.Point(0, 67);
 			this.dataGridView1.Name = "dataGridView1";
@@ -313,6 +334,21 @@ namespace opassword
 			this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1CellValueChanged);
 			this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridView1CurrentCellDirtyStateChanged);
 			this.dataGridView1.Sorted += new System.EventHandler(this.DataGridView1Sorted);
+			// 
+			// cmDelete
+			// 
+			this.cmDelete.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.deleteToolStripMenuItem});
+			this.cmDelete.Name = "cmDelete";
+			this.cmDelete.Size = new System.Drawing.Size(108, 26);
+			this.cmDelete.Opening += new System.ComponentModel.CancelEventHandler(this.CmDeleteOpening);
+			// 
+			// deleteToolStripMenuItem
+			// 
+			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.deleteToolStripMenuItem.Text = "Delete";
+			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItemClick);
 			// 
 			// MainForm
 			// 
@@ -331,6 +367,7 @@ namespace opassword
 			this.panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.nThreads)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			this.cmDelete.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
