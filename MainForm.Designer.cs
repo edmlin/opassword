@@ -39,6 +39,7 @@ namespace opassword
 		private System.Windows.Forms.ContextMenuStrip cmDelete;
 		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
 		private System.Windows.Forms.Button btReload;
+		private System.Windows.Forms.CheckBox cbShowPassword;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -64,6 +65,7 @@ namespace opassword
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.cbShowPassword = new System.Windows.Forms.CheckBox();
 			this.btReload = new System.Windows.Forms.Button();
 			this.btNext = new System.Windows.Forms.Button();
 			this.btPrev = new System.Windows.Forms.Button();
@@ -97,6 +99,7 @@ namespace opassword
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.cbShowPassword);
 			this.panel1.Controls.Add(this.btReload);
 			this.panel1.Controls.Add(this.btNext);
 			this.panel1.Controls.Add(this.btPrev);
@@ -118,9 +121,19 @@ namespace opassword
 			this.panel1.Size = new System.Drawing.Size(868, 67);
 			this.panel1.TabIndex = 0;
 			// 
+			// cbShowPassword
+			// 
+			this.cbShowPassword.Location = new System.Drawing.Point(563, 34);
+			this.cbShowPassword.Name = "cbShowPassword";
+			this.cbShowPassword.Size = new System.Drawing.Size(119, 24);
+			this.cbShowPassword.TabIndex = 12;
+			this.cbShowPassword.Text = "Show Passwords";
+			this.cbShowPassword.UseVisualStyleBackColor = true;
+			this.cbShowPassword.CheckedChanged += new System.EventHandler(this.CbShowPasswordCheckedChanged);
+			// 
 			// btReload
 			// 
-			this.btReload.Location = new System.Drawing.Point(376, 8);
+			this.btReload.Location = new System.Drawing.Point(358, 8);
 			this.btReload.Name = "btReload";
 			this.btReload.Size = new System.Drawing.Size(100, 23);
 			this.btReload.TabIndex = 11;
@@ -177,7 +190,7 @@ namespace opassword
 			// 
 			// btNewPassword
 			// 
-			this.btNewPassword.Location = new System.Drawing.Point(552, 36);
+			this.btNewPassword.Location = new System.Drawing.Point(534, 36);
 			this.btNewPassword.Name = "btNewPassword";
 			this.btNewPassword.Size = new System.Drawing.Size(23, 23);
 			this.btNewPassword.TabIndex = 6;
@@ -212,8 +225,9 @@ namespace opassword
 			// 
 			// tbNewPassword
 			// 
-			this.tbNewPassword.Location = new System.Drawing.Point(460, 39);
+			this.tbNewPassword.Location = new System.Drawing.Point(442, 39);
 			this.tbNewPassword.Name = "tbNewPassword";
+			this.tbNewPassword.PasswordChar = '*';
 			this.tbNewPassword.Size = new System.Drawing.Size(86, 20);
 			this.tbNewPassword.TabIndex = 5;
 			// 
@@ -221,12 +235,13 @@ namespace opassword
 			// 
 			this.tbPassword.Location = new System.Drawing.Point(231, 38);
 			this.tbPassword.Name = "tbPassword";
+			this.tbPassword.PasswordChar = '*';
 			this.tbPassword.Size = new System.Drawing.Size(88, 20);
 			this.tbPassword.TabIndex = 3;
 			// 
 			// label2
 			// 
-			this.label2.Location = new System.Drawing.Point(376, 41);
+			this.label2.Location = new System.Drawing.Point(358, 41);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(100, 21);
 			this.label2.TabIndex = 2;
@@ -333,6 +348,7 @@ namespace opassword
 			this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DataGridView1CellFormatting);
 			this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1CellValueChanged);
 			this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridView1CurrentCellDirtyStateChanged);
+			this.dataGridView1.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.DataGridView1EditingControlShowing);
 			this.dataGridView1.Sorted += new System.EventHandler(this.DataGridView1Sorted);
 			// 
 			// cmDelete

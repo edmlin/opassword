@@ -284,6 +284,14 @@ namespace opassword
 				else
 					e.CellStyle.ForeColor=Color.Red;
 			}
+			if( (dataGridView1.Columns[e.ColumnIndex].Name=="Password") || (dataGridView1.Columns[e.ColumnIndex].Name=="New Password") )
+			{
+				if(e.Value!=null && !cbShowPassword.Checked)
+				{
+					e.Value=new string('*',e.Value.ToString().Length);
+				}
+			}
+				
 		}
 		void BtPasswordClick(object sender, EventArgs e)
 		{
@@ -427,6 +435,34 @@ namespace opassword
 		void BtReloadClick(object sender, EventArgs e)
 		{
 			MainFormLoad(null,null);
+		}
+		void CbShowPasswordCheckedChanged(object sender, EventArgs e)
+		{
+			if(cbShowPassword.Checked)
+			{
+				tbPassword.PasswordChar=tbNewPassword.PasswordChar='\0';
+			}
+			else
+			{
+				tbPassword.PasswordChar=tbNewPassword.PasswordChar='*';
+			}
+			dataGridView1.InvalidateColumn(dataGridView1.Columns["Password"].Index);
+			dataGridView1.InvalidateColumn(dataGridView1.Columns["New Password"].Index);
+		}
+		void DataGridView1EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+		{
+			string columnName=dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].Name;
+			if( (columnName=="Password") || (columnName=="New Password") )
+			{
+				TextBox tb=e.Control as TextBox;
+				if(tb!=null)
+				{
+					if(cbShowPassword.Checked)
+						tb.PasswordChar='\0';
+					else
+						tb.PasswordChar='*';
+				}
+			}
 		}
 	}
 }
